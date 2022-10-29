@@ -56,7 +56,7 @@ private static boolean checkNbit(int nBit) {
 	static public long invertBitValue(long number, int nBit) {
 		long res = -1;
 		if (checkNbit(nBit)) {
-			long mask = 1 << nBit; //all bits are 0 except bit number nBit
+			long mask = 1 << nBit; // all bits are 0 except bit number nBit
 			res = number ^ mask;
 		}
 		return res;
