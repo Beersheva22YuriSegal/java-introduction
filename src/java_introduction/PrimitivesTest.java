@@ -11,10 +11,10 @@ class PrimitivesTest {
 	@Disabled
 	void dataTypeTest() {
 		int b = 10;
-		short a = 20;
+		short a = 20000;
 		char c = 'd';
 		long l = (long) 10.1;
-		byte b1 = (byte) 1000;
+		byte b1 = (byte) 1011;
 		a = (short) l;
 		float f = 10.2f;
 		int b2 = 0xfffffff1;		
@@ -50,24 +50,32 @@ class PrimitivesTest {
 		return number % 10;
 	}
 	
-	
+	@Test
 	void getBitValue() {
-		long number = 0x3ab7f5; //001110101011011111110101
-		assertEquals(1, BitOperations.getBitValue(number, 5));
-		assertEquals(0, BitOperations.getBitValue(number, 11));
-		assertEquals(0, BitOperations.getBitValue(number, 1));
-		assertEquals(1, BitOperations.getBitValue(number, 2));
+		long num = 0x3ab7f5; // 001110101011_0_11111_1_10_1_0_1
+		assertEquals(1, BitOperations.getBitValue(num, 5));
+		assertEquals(0, BitOperations.getBitValue(num, 11));
+		assertEquals(0, BitOperations.getBitValue(num, 1));
+		assertEquals(1, BitOperations.getBitValue(num, 2));
+		assertEquals(-1, BitOperations.getBitValue(num, 100));
+		assertEquals(-1, BitOperations.getBitValue(num, -2));
 	}
-	
+	@Test
 	void setBitValueTest() {
-		long number = 0x3ab7f5;
-		assertEquals(0x3ab7e5, BitOperations.setBitValue(number, 5, false));
-		assertEquals(0x3ab7f5, BitOperations.setBitValue(number, 5, true));
+		long num = 0x3ab7f5; // 001110101011011111_1_10101
+		assertEquals(0x3ab7d5, BitOperations.setBitValue(num, 5, false));  //0x3ab6_(f -> d)_5	 001110101011011111_0_10101
+		assertEquals(0x3ab7f5, BitOperations.setBitValue(num, 5, true));   //0x3ab6_f_5			 001110101011011111_1_10101
+		assertEquals(0x3ab7f7, BitOperations.setBitValue(num, 1, true));   //0x3ab6f_(5 -> 7)_ 	 0011101010100111111101_1_1
+		assertEquals(0x3ab6f5, BitOperations.setBitValue(num, 8, false));  //0x3ab_(7 -> 6)_f5 	 001110101010011_0_11110101
+		assertEquals(0x3eb7f5, BitOperations.setBitValue(num, 18, true));  //0x3_(a -> e)_b7f5   00111_1_101010011011110101
+		assertEquals(0x1ab7f5, BitOperations.setBitValue(num, 21, false)); //0x_(3 -> 1)_ab7f5   00_0_110101010011111110101
 	}
-	
-	void revertBitValueTest() {
-		long number = 0x3ab7f5;
-		assertEquals(0x3ab7e5, BitOperations.revertBit(number, 5));
-		assertEquals(0x3ab7f5, BitOperations.revertBit(number, 0));
+	@Test
+	void invertBitValueTest() {
+		long num = 0x3ab7f5; // 001110101011011111110101
+		assertEquals(0x3ab7d5, BitOperations.invertBitValue(num, 5));
+		assertEquals(0x3ab7f4, BitOperations.invertBitValue(num, 0));
+		assertEquals(0x3ab3f5, BitOperations.invertBitValue(num, 10));
+		assertEquals(0x3a37f5, BitOperations.invertBitValue(num, 15));
 	}
 }
