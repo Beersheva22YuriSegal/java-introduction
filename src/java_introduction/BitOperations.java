@@ -15,7 +15,7 @@ public class BitOperations {
 	static public int getBitValue(long number, int nBit) {
 		int res = -1;
 	if (checkNbit(nBit)) {
-		long mask = 1 << nBit; //all bits are 0 except bit with number nBit
+		long mask = getMask(nBit); //all bits are 0 except bit with number nBit
 		if ((number & mask) != 0) {
 			res = 1;
 		} else {
@@ -27,6 +27,9 @@ public class BitOperations {
 	private static boolean checkNbit(int nBit) {
 		return nBit < 64 && nBit >= 0;
 }
+	private static long getMask(int n) {
+		return 1L << n;
+	}
 /**
  * 
  * @param number - any number
@@ -37,12 +40,11 @@ public class BitOperations {
 	static public long setBitValue(long number, int nBit, boolean value) {
 		long res = -1;
 			if (checkNbit(nBit)) {
+				long mask = getMask(nBit); // all bits are 0 except bit number nBit
 				if (value) {
-					long mask = 1 << nBit; // all bits are 0 except bit number nBit
 					res = number | mask;
 				} else {
-					long mask = ~(1 << nBit); // all bits are 1 except bit number nBit
-					res = number & mask;
+					res = number & ~mask;
 			}
 	}
 	return res;
@@ -56,7 +58,7 @@ public class BitOperations {
 	static public long invertBitValue(long number, int nBit) {
 		long res = -1;
 		if (checkNbit(nBit)) {
-			long mask = 1 << nBit; // all bits are 0 except bit number nBit
+			long mask = getMask(nBit); // all bits are 0 except bit number nBit
 			res = number ^ mask;
 		}
 		return res;
