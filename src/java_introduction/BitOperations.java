@@ -16,16 +16,16 @@ public class BitOperations {
 		int res = -1;
 	if (checkNbit(nBit)) {
 		long mask = 1 << nBit; //all bits are 0 except bit with number nBit
-		if ((number & mask) > 0) {
-			res = 1;
-		} else {
+		if ((number & mask) != 0) {
 			res = 0;
+		} else {
+			res = 1;
 		}
 	}
-	return res;
+		return res;
 }
-private static boolean checkNbit(int nBit) {
-	return nBit < 64 && nBit >= 0;
+	private static boolean checkNbit(int nBit) {
+		return nBit < 64 && nBit >= 0;
 }
 /**
  * 
@@ -41,7 +41,7 @@ private static boolean checkNbit(int nBit) {
 					long mask = 1 << nBit; // all bits are 0 except bit number nBit
 					res = number | mask;
 				} else {
-					long mask = ~ (1 << nBit); // all bits are 1 except bit number nBit
+					long mask = ~(1 << nBit); // all bits are 1 except bit number nBit
 					res = number & mask;
 			}
 	}

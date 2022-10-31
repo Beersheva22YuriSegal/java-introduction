@@ -51,6 +51,7 @@ class PrimitivesTest {
 	}
 	
 	@Test
+	@Disabled
 	void getBitValue() {
 		long num = 0x3ab7f5; // 001110101011_0_11111_1_10_1_0_1
 		assertEquals(1, BitOperations.getBitValue(num, 5));
@@ -59,6 +60,9 @@ class PrimitivesTest {
 		assertEquals(1, BitOperations.getBitValue(num, 2));
 		assertEquals(-1, BitOperations.getBitValue(num, 100));
 		assertEquals(-1, BitOperations.getBitValue(num, -2));
+		
+		num = -1;
+		assertEquals(1, BitOperations.getBitValue(num, 63));
 	}
 	@Test
 	void setBitValueTest() {
@@ -72,10 +76,13 @@ class PrimitivesTest {
 	}
 	@Test
 	void invertBitValueTest() {
-		long num = 0x3ab7f5; // 001110101011011111110101
+		long num = 0x3ab7f5;
 		assertEquals(0x3ab7d5, BitOperations.invertBitValue(num, 5));
 		assertEquals(0x3ab7f4, BitOperations.invertBitValue(num, 0));
 		assertEquals(0x3ab3f5, BitOperations.invertBitValue(num, 10));
 		assertEquals(0x3a37f5, BitOperations.invertBitValue(num, 15));
+		
+		num = BitOperations.invertBitValue(num, 63);
+		assertEquals(0, BitOperations.getBitValue(num, 63));
 	}
 }
