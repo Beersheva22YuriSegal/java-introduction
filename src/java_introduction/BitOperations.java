@@ -17,9 +17,9 @@ public class BitOperations {
 	if (checkNbit(nBit)) {
 		long mask = 1 << nBit; //all bits are 0 except bit with number nBit
 		if ((number & mask) != 0) {
-			res = 0;
-		} else {
 			res = 1;
+		} else {
+			res = 0;
 		}
 	}
 		return res;

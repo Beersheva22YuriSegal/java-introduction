@@ -51,7 +51,6 @@ class PrimitivesTest {
 	}
 	
 	@Test
-	@Disabled
 	void getBitValue() {
 		long num = 0x3ab7f5; // 001110101011_0_11111_1_10_1_0_1
 		assertEquals(1, BitOperations.getBitValue(num, 5));
