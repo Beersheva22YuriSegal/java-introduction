@@ -2,6 +2,8 @@ package java_introduction;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.LineNumberInputStream;
+
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -51,6 +53,7 @@ class PrimitivesTest {
 	}
 	
 	@Test
+	@Disabled
 	void getBitValueTest() {
 		long num = 0x3ab7f5; // 001110101011_0_11111_1_10_1_0_1
 		assertEquals(1, BitOperations.getBitValue(num, 5));
@@ -61,6 +64,7 @@ class PrimitivesTest {
 		assertEquals(-1, BitOperations.getBitValue(num, -2));
 	}
 	@Test
+	@Disabled
 	void setBitValueTest() {
 		long num = 0x3ab7f5; // 001110101011011111_1_10101
 		assertEquals(0x3ab7d5, BitOperations.setBitValue(num, 5, false));  //0x3ab6_(f -> d)_5	 001110101011011111_0_10101
@@ -71,6 +75,7 @@ class PrimitivesTest {
 		assertEquals(0x1ab7f5, BitOperations.setBitValue(num, 21, false)); //0x_(3 -> 1)_ab7f5   00_0_110101010011111110101
 	}
 	@Test
+	@Disabled
 	void invertBitValueTest() {
 		long num = 0x3ab7f5;
 		assertEquals(0x3ab7d5, BitOperations.invertBitValue(num, 5));
@@ -81,5 +86,27 @@ class PrimitivesTest {
 		assertEquals(1, BitOperations.getBitValue(num, 63));
 		num = BitOperations.invertBitValue(num, 63);
 		assertEquals(0, BitOperations.getBitValue(num, 63));
+	}
+	@Test
+	void digitsNumberTest() {
+		//TODO
+		assertEquals(5, Number.getNdigits(13579));
+		assertEquals(7, Number.getNdigits(1234567));
+		assertEquals(3, Number.getNdigits(456));
+		assertEquals(1, Number.getNdigits(0));
+		assertEquals(3, Number.getNdigits(-100));
+	}
+//	@Test
+	void leadingZerosTest() {
+		//TODO
+		assertEquals(, BitOperations.leadingZeros(0))
+	}
+//	@Test
+	void onesInNumberTest() {
+		//TODO
+	}
+//	@Test
+	void isHappyNumberTest() {
+		//TODO
 	}
 }

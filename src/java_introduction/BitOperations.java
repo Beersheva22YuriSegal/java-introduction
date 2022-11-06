@@ -6,6 +6,8 @@ package java_introduction;
  *
  */
 public class BitOperations {
+private static final int N_BITS = 64;
+
 /**
  * 
  * @param number any number
@@ -16,16 +18,18 @@ public class BitOperations {
 		int res = -1;
 	if (checkNbit(nBit)) {
 		long mask = getMask(nBit); //all bits are 0 except bit with number nBit
-		if ((number & mask) != 0) {
+		res = (number & mask) == 0 ? 0 : 1;
+/** 		if ((number & mask) != 0) {
 			res = 1;
 		} else {
 			res = 0;
 		}
+ */
 	}
 		return res;
 }
 	private static boolean checkNbit(int nBit) {
-		return nBit < 64 && nBit >= 0;
+		return nBit < N_BITS && nBit >= 0;
 }
 	private static long getMask(int n) {
 		return 1L << n;
@@ -41,14 +45,18 @@ public class BitOperations {
 		long res = -1;
 			if (checkNbit(nBit)) {
 				long mask = getMask(nBit); // all bits are 0 except bit number nBit
-				if (value) {
+				res = value ? (number | mask) : (number & ~mask);
+			}
+			return res;
+	}
+/** 				if (value) {
 					res = number | mask;
 				} else {
 					res = number & ~mask;
 			}
-	}
-	return res;
-}
+ */
+
+	
 /**
  * 
  * @param number - any number
@@ -60,6 +68,26 @@ public class BitOperations {
 		if (checkNbit(nBit)) {
 			long mask = getMask(nBit); // all bits are 0 except bit number nBit
 			res = number ^ mask;
+		}
+		return res;
+	}
+	
+	static public int leadingZeros(long number) {
+		int res = 0;
+		int nBit = N_BITS - 1;
+		while(nBit >= 0 && getBitValue(number, nBit) == 0) {
+			nBit--;
+			res++;
+		}
+		return res;
+	}
+	
+	static public int onesInNumber(long number) {
+		int res = 0;
+		for (int i = 0; i < N_BITS; i++) {
+			if (getBitValue(number, i) == 1) {
+			res++;
+			}
 		}
 		return res;
 	}
