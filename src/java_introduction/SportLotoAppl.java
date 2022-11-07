@@ -10,9 +10,15 @@ public class SportLotoAppl {
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		//System.out.print("" + 100 + " " + 200);
+		int num = 0;
+		long mask = 0;
 		for (int i = 0; i < 6; i++) {
-			System.out.print(getRandomInt(1, 49) + " ");
+			num = getRandomInt(1, 49);
+			if (BitOperations.getBitValue(mask, num) == 0) {
+			 // mask = BitOperations.setBitValue(mask, num, true);
+				mask = BitOperations.invertBitValue(mask, num);
+				System.out.println(num + " ");
+			}
 		}
 	}
 	
