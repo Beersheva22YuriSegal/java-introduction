@@ -16,9 +16,21 @@ static public int getNdigits(long number) {
  * and sum of first three digits equals the sum of last three digits
  */
 static public boolean isHappyNumber(int number) {
-	 
-	return false;
+	 boolean isHappy = false;
+	 if (getNdigits(number) == 6) {
+		 int firstThree = 0; //sum of XXXxxx in number
+		 int lastThree = 0; //sum of xxXXX in number
+		 for (int n = 1; n <= 100000; n = n*10) {
+			 if (n <= 100) {
+				 lastThree += number / n % 10;
+			 } else {
+				 firstThree += number / n % 10;
+			 }
+		 }
+		 if (lastThree == firstThree) {
+			 isHappy = true;
+		 }
+	 }
+	return isHappy;
 }
 }
-
-// Print 6 unique random numbers from 1 to 49

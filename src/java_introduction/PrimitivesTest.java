@@ -96,17 +96,29 @@ class PrimitivesTest {
 		assertEquals(1, Number.getNdigits(0));
 		assertEquals(3, Number.getNdigits(-100));
 	}
-//	@Test
+	@Test
 	void leadingZerosTest() {
 		//TODO
-		assertEquals(, BitOperations.leadingZeros(0))
+		assertEquals(64, BitOperations.leadingZeros(0));
+		assertEquals(63, BitOperations.leadingZeros(1));
+		assertEquals(0, BitOperations.leadingZeros(-17));
+		assertEquals(59, BitOperations.leadingZeros(25));
+		assertEquals(42, BitOperations.leadingZeros(0x3ab7f5)); // 001110101011011111_1_10101
 	}
-//	@Test
+	@Test
 	void onesInNumberTest() {
 		//TODO
+		assertEquals(0, BitOperations.onesInNumber(0));
+		assertEquals(2, BitOperations.onesInNumber(3));
+		assertEquals(16, BitOperations.onesInNumber(0x3ab7f5));
+		assertEquals(49, BitOperations.onesInNumber(-0x3ab7f5));
 	}
-//	@Test
+	@Test
 	void isHappyNumberTest() {
 		//TODO
+		assertEquals(true, Number.isHappyNumber(234432));
+		assertEquals(false, Number.isHappyNumber(987456));
+		assertEquals(true, Number.isHappyNumber(715904));
+		assertEquals(true, Number.isHappyNumber(100001));
 	}
 }
