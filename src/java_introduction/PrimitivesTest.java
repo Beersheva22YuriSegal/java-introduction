@@ -146,9 +146,34 @@ class PrimitivesTest {
 		assertArrayEquals(expected, Numbers.getDigits(1234));
 	}
 	@Test
+	@Disabled
 	void getNumberFromDigitsTest() {
 		int expectedNumber = 1234;
 		assertEquals(expectedNumber, Numbers.getNumberFromDigits(new int[]{1, 2, 3, 4}));
 	}
-	
+	@Test
+	void arraysAddsNumberTest() {
+		int[] initialArray = {2, 4, 6};
+		int[] expected = {2, 4, 6, 8};
+		assertArrayEquals(expected, MyArrays.addsNumber(initialArray, 8));
+	}
+	@Test
+	void arraysRemoveNumberTest() {
+		int[] initialArray = {2,4,6,8};
+		int[] expected = {2,4,6};
+		assertArrayEquals(expected, MyArrays.removeNumber(initialArray, 3));
+		assertArrayEquals(new int[] {}, MyArrays.removeNumber(new int[] {1}, 0));
+	}
+	@Test
+	void insertSortedTest() {
+		int[] expected0 = {1,2,3,4,8};
+		assertArrayEquals(expected0, MyArrays.insertSorted(new int[] {1,2,3,4}, 8));
+		int[] expected1 = {2,4,5,6,8};
+		assertArrayEquals(expected1, MyArrays.insertSorted(new int[] {2,4,6,8}, 5));
+		int[] expected2 = {3,5,5,7,9};
+		assertArrayEquals(expected2, MyArrays.insertSorted(new int[] {3,5,7,9}, 5));
+		int[] expected3 = {0,1,2,3};
+		assertArrayEquals(expected3, MyArrays.insertSorted(new int[] {1,2,3}, 0));
+
+	}
 }

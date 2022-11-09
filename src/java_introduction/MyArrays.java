@@ -1,5 +1,7 @@
 package java_introduction;
 
+import java.util.Arrays;
+
 public class MyArrays {
 	/**
 	 * 
@@ -8,9 +10,9 @@ public class MyArrays {
 	 * @return new array with added at end a given number
 	 */
 	public static int[] addsNumber(int[] array, int number) {
-		// TODO
-		// use standard class Arrays, method copyOf
-		return null;
+		int[] newArray = Arrays.copyOf(array, array.length + 1);
+		newArray[array.length] = number;
+		return newArray;
 	}
 
 	/**
@@ -22,8 +24,13 @@ public class MyArrays {
 	 */
 	public static int[] removeNumber(int array[], int index) {
 		// TODO
-		// use standard class System, method arraycopy
-		return null;
+		int[] newArray = array;
+		if (index >= 0 && index < array.length) {
+			newArray = new int[array.length - 1];
+			System.arraycopy(array, 0, newArray, 0, index);
+			System.arraycopy(array, index + 1, newArray, index, newArray.length - index);
+		}
+		return newArray;
 	}
 
 	/**
@@ -33,9 +40,18 @@ public class MyArrays {
 	 * @return new array with inserted number at an index for keeping array sorted
 	 */
 	public static int[] insertSorted(int arraySorted[], int number) {
-		// TODO
-		// use the method binarySearch of the standard class Arrays
-		// use the method arraycopy of the standard class System
-		return null;
+		int tempIndex = Arrays.binarySearch(arraySorted, number);
+		int insIndex = 0;
+		if (tempIndex < 0) {
+			insIndex = -(tempIndex + 1);
+		} else {
+			insIndex = tempIndex;
+		}
+		int[] res = new int[arraySorted.length + 1];
+		System.arraycopy(arraySorted, 0, res, 0, insIndex);
+		res[insIndex] = number;
+		System.arraycopy(arraySorted, insIndex, res, insIndex + 1, arraySorted.length - insIndex);
+
+		return res;
 	}
 }
