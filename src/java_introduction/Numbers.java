@@ -31,7 +31,7 @@ public class Numbers {
 		return res;
 	}
 
-	private static int getSumDigits(int number) {
+	public static int getSumDigits(int number) {
 		int res = 0;
 		do {
 			res += number % 10;
