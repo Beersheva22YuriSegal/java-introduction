@@ -152,12 +152,14 @@ class PrimitivesTest {
 		assertEquals(expectedNumber, Numbers.getNumberFromDigits(new int[]{1, 2, 3, 4}));
 	}
 	@Test
+	@Disabled
 	void arraysAddsNumberTest() {
 		int[] initialArray = {2, 4, 6};
 		int[] expected = {2, 4, 6, 8};
 		assertArrayEquals(expected, MyArrays.addsNumber(initialArray, 8));
 	}
 	@Test
+	@Disabled
 	void arraysRemoveNumberTest() {
 		int[] initialArray = {2,4,6,8};
 		int[] expected = {2,4,6};
@@ -165,6 +167,7 @@ class PrimitivesTest {
 		assertArrayEquals(new int[] {}, MyArrays.removeNumber(new int[] {1}, 0));
 	}
 	@Test
+	@Disabled
 	void insertSortedTest() {
 		int[] expected0 = {1,2,3,4,8};
 		assertArrayEquals(expected0, MyArrays.insertSorted(new int[] {1,2,3,4}, 8));

@@ -23,14 +23,13 @@ public class MyArrays {
 	 *         doesn't exist in a given array it returns the same array
 	 */
 	public static int[] removeNumber(int array[], int index) {
-		// TODO
-		int[] newArray = array;
+		int res[] = array;
 		if (index >= 0 && index < array.length) {
-			newArray = new int[array.length - 1];
-			System.arraycopy(array, 0, newArray, 0, index);
-			System.arraycopy(array, index + 1, newArray, index, newArray.length - index);
+			res = new int[array.length - 1];
+			System.arraycopy(array, 0, res, 0, index);
+			System.arraycopy(array, index + 1, res, index, res.length - index);
 		}
-		return newArray;
+		return res;
 	}
 
 	/**
@@ -40,18 +39,41 @@ public class MyArrays {
 	 * @return new array with inserted number at an index for keeping array sorted
 	 */
 	public static int[] insertSorted(int arraySorted[], int number) {
-		int tempIndex = Arrays.binarySearch(arraySorted, number);
-		int insIndex = 0;
-		if (tempIndex < 0) {
-			insIndex = -(tempIndex + 1);
-		} else {
-			insIndex = tempIndex;
+		int index = Arrays.binarySearch(arraySorted, number);
+		if (index < 0) {
+			index = -(index + 1);
 		}
-		int[] res = new int[arraySorted.length + 1];
-		System.arraycopy(arraySorted, 0, res, 0, insIndex);
-		res[insIndex] = number;
-		System.arraycopy(arraySorted, insIndex, res, insIndex + 1, arraySorted.length - insIndex);
+		return insertAtIndex(arraySorted, number, index);
+	}
 
+	private static int[] insertAtIndex(int[] array, int number, int index) {
+		int res[] = new int[array.length + 1];
+		System.arraycopy(array, 0, res, 0, index);
+		res[index] = number;
+		System.arraycopy(array, index, res, index + 1, array.length - index);
 		return res;
+	}
+
+	/**
+	 * 
+	 * @param arraySorted
+	 * @param number
+	 * @return index value if number exists otherwise -1 
+	 * O[N] - search number in unsorted array 
+	 * O[Log(N)] - search number in sorted (binary search)
+	 */
+	public static int binarySearch(int arraySorted[], int number) {
+		int left = 0;
+		int right = arraySorted.length - 1;
+		int middle = right / 2;
+		while(left <= right && arraySorted[middle] != number) {
+			if (number < arraySorted[middle]) {
+				right = middle - 1;
+			} else {
+				left = middle + 1;
+			}
+			middle = (left + right) / 2;
+		}
+		return left > right ? -1 : middle;
 	}
 }
