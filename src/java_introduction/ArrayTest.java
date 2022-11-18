@@ -19,7 +19,7 @@ public class ArrayTest {
 		assertEquals(-16, MyArrays.binarySearchLeft(ar, 25));
 		assertEquals(-17, MyArrays.binarySearchLeft(ar, 45));
 	}
-
+	
 	@Test
 	@Disabled
 	void bubbleSortTest() {

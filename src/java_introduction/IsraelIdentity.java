@@ -23,7 +23,7 @@ public class IsraelIdentity {
 		}
 		return res;
 	}
-
+	
 	private static int getControlSum(int[] digits) {
 		return sumEvenIndexes(digits) + sumOddIndexes(digits);
 	}

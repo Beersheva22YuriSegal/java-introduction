@@ -14,7 +14,7 @@ public class MyArrays {
 		newArray[array.length] = number;
 		return newArray;
 	}
-
+	
 	/**
 	 * 
 	 * @param array
