@@ -26,5 +26,13 @@ class ObjectTests {
 		System.out.println((byte)helloAr[4]);
 		assertEquals(5, hello.length());
 	}
+	@Test
+	void isAnagramTest() {
+		assertTrue(Strings.isAnagram("javacode", "cedovaja"));
+		assertTrue(Strings.isAnagram("javacode", "aajveocde"));
+		assertTrue(Strings.isAnagram("javacode", "edocavaj"));
+		assertFalse(Strings.isAnagram("javacode", "aaaveocde"));
+		assertFalse(Strings.isAnagram("javacode", "vavavava"));
+	}
 	
 }
