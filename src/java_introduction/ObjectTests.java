@@ -15,6 +15,16 @@ class ObjectTests {
 		Integer d = 201;
 		assertEquals(c, d);
 		assertTrue(a == b);
-		assertFalse(c == d);	
+		assertFalse(c == d);
+		assertTrue(c.equals(d));
 	}
+	@Test
+	void stringTest() {
+		String hello = "hello";
+		char[] helloAr = hello.toCharArray();
+		assertEquals('e', helloAr[1]);
+		System.out.println((byte)helloAr[4]);
+		assertEquals(5, hello.length());
+	}
+	
 }
