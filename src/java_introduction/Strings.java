@@ -11,12 +11,22 @@ public class Strings {
 	 *         length 2. the same symbols just in different order
 	 */
 	public static boolean isAnagram(String str1, String str2) {
-		boolean res = false;
-		char[] arr1 = str1.toCharArray();
-		char[] arr2 = str2.toCharArray();
-		if(arr1.length == arr2.length) {
-			
+		// maxChar - constant of all possible values in range [0, ..., 127]
+		int maxChar = 128;
+		int[] helper = new int[maxChar];
+		int str1Length = str1.length();
+		int str2Length = str2.length();
+		int index = 0;
+		//length 
+		if (str1Length == str2Length) {
+			for (int i = 0; i < str1Length; i++) {
+				helper[(int)str1.charAt(i)]++;
+				helper[(int)str2.charAt(i)]--;
+			}
+				while(index < helper.length && helper[index] == 0) {
+					index++;
+				}
 		}
-		return res;
+		return index == helper.length;
 	}
 }

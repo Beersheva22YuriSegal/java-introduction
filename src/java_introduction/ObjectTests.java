@@ -28,11 +28,16 @@ class ObjectTests {
 	}
 	@Test
 	void isAnagramTest() {
-		assertTrue(Strings.isAnagram("javacode", "cedovaja"));
-		assertTrue(Strings.isAnagram("javacode", "aajveocde"));
-		assertTrue(Strings.isAnagram("javacode", "edocavaj"));
-		assertFalse(Strings.isAnagram("javacode", "aaaveocde"));
-		assertFalse(Strings.isAnagram("javacode", "vavavava"));
+		String word = "java code";
+		assertTrue(Strings.isAnagram(word, "ced ovaja"));
+		assertTrue(Strings.isAnagram(word, "aajvo cde"));
+		assertTrue(Strings.isAnagram(word, "ed ocavaj"));
+		assertFalse(Strings.isAnagram(word, "a a a veocde"));
+		assertFalse(Strings.isAnagram(word, "vavavava"));
+		
+		String word1 = "hello Israel";
+		assertTrue(Strings.isAnagram(word1, "olIelle hars"));
+		assertFalse(Strings.isAnagram(word1, "olielle hars"));
 	}
 	
 }
