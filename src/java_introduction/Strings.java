@@ -29,4 +29,24 @@ public class Strings {
 		}
 		return index == helper.length;
 	}
+	
+	public static void sortStringNumbers(String[] arr) {
+		int[] helper = new int[Byte.MAX_VALUE - Byte.MIN_VALUE + 1];
+		int j = 0;
+		int k = 0;
+		for (int i = 0; i < arr.length; i++) {
+			Integer number = Integer.parseInt(arr[i]);
+			helper[number + 128]++;
+		}
+		while (j < helper.length) {
+			if (helper[j] == 0) {
+				j++;
+			} else {
+				Integer number = j - 128;
+				arr[k] = number.toString();
+				k++;
+				helper[j]--;
+			}
+		}
+	}
 }

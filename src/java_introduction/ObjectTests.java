@@ -40,4 +40,12 @@ class ObjectTests {
 		assertFalse(Strings.isAnagram(word1, "olielle hars"));
 	}
 	
+	@Test
+	void sortStringNumbersTest() {
+		String[] array = { "37", "7", "-3", "41", "0", "-128", "7", "7", "-10", "-10", "127" };
+		String[] expected = { "-128", "-10", "-10", "-3", "0", "7", "7", "7", "37", "41", "127" };
+		Strings.sortStringNumbers(array);
+		assertArrayEquals(expected, array);
+	}
+	
 }
