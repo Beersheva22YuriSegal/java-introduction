@@ -33,16 +33,52 @@ public class StringsTest {
 		assertFalse("-1".matches(ipV4Octet()));
 	}
 	@Test
-	void ipVTest() {
-		assertTrue("255.255.255.255".matches(ipV4()));
-		assertTrue("0.0.0.0".matches(ipV4()));
-		assertTrue("195.155.1.1".matches(ipV4()));
-		assertFalse("256.255.255.256".matches(ipV4()));
-		assertFalse("255.255255.255".matches(ipV4()));
-		assertFalse("255.255.255.-1".matches(Strings.ipV4()));
-		assertFalse("255.255.255".matches(Strings.ipV4()));
-		assertFalse("255.255".matches(Strings.ipV4()));
-		assertFalse("255".matches(Strings.ipV4()));
+	void ipV4TestTrue() {
+		assertTrue("089.045.120.230".matches(Strings.ipV4()));
+		assertTrue("0.0.0.0".matches(Strings.ipV4()));
+		assertTrue("123.245.213.224".matches(Strings.ipV4()));
+		assertTrue("255.255.255.255".matches(Strings.ipV4()));
+		assertTrue("1.4.4.6".matches(Strings.ipV4()));
+	}
+
+	@Test
+	void ipV4TestFalse() {
+		assertFalse("123.345.1234.123".matches(Strings.ipV4()));
+		assertFalse("*.345.1234.123".matches(Strings.ipV4()));
+		assertFalse("123.".matches(Strings.ipV4()));
+		assertFalse("_/".matches(Strings.ipV4()));
+	}
+	
+	@Test
+	void isArithmeticExpressionTest() {
+		assertTrue(isArithmeticExpression("10 * (2) + 3 "));
+		assertTrue(isArithmeticExpression("10 * 2 + 3))"));
+		assertTrue(isArithmeticExpression("((((4 + ((.135)"));
+		assertFalse(isArithmeticExpression("10 * 2( + 3)"));
+		assertFalse(isArithmeticExpression("10 * )2) + 3"));
+		assertFalse(isArithmeticExpression("7 / ))2) + 3"));
+		assertTrue(isArithmeticExpression("a + b + c * 4 + (( .5"));
+		assertFalse(isArithmeticExpression("a + b + c * 4 + (( -.135"));
+		assertFalse(isArithmeticExpression("java + * 4 + (( .135"));
+		assertFalse(isArithmeticExpression("1a * 4 + (( .5"));
+	}
+	
+	@Test
+	void computeExpressionTest() {
+		assertEquals(10.5, computeArithmeticExpression("2 + 2 + 1 * 2 + 0.5", null, null));
+		assertTrue(Double.isNaN(computeArithmeticExpression("2 # 2 ++ 10", null, null)));
+		assertEquals(10.5, computeArithmeticExpression("i + 1 + j * 2 + 0.5", new double[] { 1, 2 }, new String[] { "i", "j" }));
+		assertTrue(Double.isNaN(computeArithmeticExpression("i + 1 + j * 2 + c11", new double[] { 1, 2 }, new String[] { "i", "j" })));
+		assertFalse(Double.isNaN(computeArithmeticExpression("i + 1 + j * 2 + cass11", new double[] { 1, 2 }, new String[] { "i", "j" })));
+	}
+	
+	@Test
+	void checkBracesTest() {
+		assertTrue(checkBraces("()"));
+		assertTrue(checkBraces("((()))"));
+		assertFalse(checkBraces("(()"));
+		assertFalse(checkBraces(")"));
+		assertFalse(checkBraces("("));
 	}
 
 }
