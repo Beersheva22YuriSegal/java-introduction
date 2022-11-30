@@ -1,7 +1,8 @@
 package telran.text;
 
-public class Strings {
+import java.util.Arrays;
 
+public class Strings {
 	/**
 	 * 
 	 * @param str1
@@ -11,75 +12,75 @@ public class Strings {
 	 *         length 2. the same symbols just in different order
 	 */
 	public static boolean isAnagram(String str1, String str2) {
-		// maxChar - constant of all possible values in range [0, ..., 127]
-		int maxChar = 128;
-		int[] helper = new int[maxChar];
-		int str1Length = str1.length();
-		int str2Length = str2.length();
-		int index = 0;
-		if (str1Length == str2Length) {
-			for (int i = 0; i < str1Length; i++) {
-				helper[(int) str1.charAt(i)]++;
-				helper[(int) str2.charAt(i)]--;
+		boolean result = false;
+		char[] array1 = str1.toCharArray();
+		char[] array2 = str2.toCharArray();
+		if (array1.length == array2.length) {
+			int[] buffer = new int[Character.MAX_VALUE];
+			for (int i = 0; i < array1.length; i++) {
+				buffer[array1[i]]++;
+				buffer[array2[i]]--;
 			}
-			while (index < helper.length && helper[index] == 0) {
-				index++;
-			}
+			result = isEmptyArray(buffer);
 		}
-		return index == helper.length;
+
+		return result;
 	}
 
-	public static void sortStringNumbers(String[] arr) {
-		int[] helper = new int[Byte.MAX_VALUE - Byte.MIN_VALUE + 1];
-		int j = 0;
-		int k = 0;
-		for (int i = 0; i < arr.length; i++) {
-			Integer number = Integer.parseInt(arr[i]);
-			helper[number + 128]++;
-		}
-		while (j < helper.length) {
-			if (helper[j] == 0) {
-				j++;
-			} else {
-				Integer number = j - 128;
-				arr[k] = number.toString();
-				k++;
-				helper[j]--;
+	private static boolean isEmptyArray(int[] array) {
+		for (int i = 0; i < array.length; i++) {
+			if (array[i] != 0) {
+				return false;
 			}
 		}
+		return true;
 	}
+	
+	public static void sortStringNumbers(String[] array) {
+		int[] buffer = new int[Byte.MAX_VALUE - Byte.MIN_VALUE + 1];
+		for (int i = 0; i < array.length; i++) {
+			int index = Integer.parseInt(array[i]) - Byte.MIN_VALUE;
 
-	public static String ipV4Octet() {
-		// options here: for 1 and 2 digits; for 3 digits there is few groups with max
-		// value: 099, 199, 249, 255
-		return "([01]?\\d\\d?|2([0-4]\\d|5[0-5]))";
+			buffer[index]++;
+		}
+		int outputIndex = 0;
+		for (int bufferIndex = 0; bufferIndex < buffer.length; bufferIndex++) {
+			for (int j = 0; j < buffer[bufferIndex]; j++) {
+				array[outputIndex] = String.valueOf(bufferIndex + Byte.MIN_VALUE);
+				outputIndex++;
+			}
+		}
 	}
-
-	public static String ipV4() {
-		String octetExp = ipV4Octet();
-		return String.format("(%1$s\\.){3}%1$s", octetExp);
-	}
-
-	private static String arithmeticExpression() {
-		String operatorExp = operator();
-		String operandExp = operand();
-		return String.format("\\(*%1$s(%2$s\\(*%1$s\\)*)*", operandExp, operatorExp);
-	}
-
+	
 	public static String javaNameExp() {
 		return "[a-zA-Z$][\\w$]*|_[\\w$]+";
 	}
 	
-	private static String numExp() {
-		return "(\\d+\\.?\\d*|\\.\\d+)";
+	public static String ipV4Octet() {
+		//max values if 3 digits: 099 199 249 255
+		return "\\d{1,2}|[0-1][0-9]{2}|2[0-4][0-9]|25[0-5]";
 	}
+	
+	public static String ipV4() {
+		String ipV4Octet = ipV4Octet();
+		return String.format("((%s)\\.){3}(%s)", ipV4Octet, ipV4Octet);
+	}
+	
+	private static String arithmeticExpression() {
+		String operatorExp = operator();
+		String operandExp = operand();
+		return String.format("%1$s(%2$s%1$s)*", operandExp, operatorExp);
+	}
+
 
 	private static String operand() {
-		return String.format("(%s|%s)", numExp(), javaNameExp());
+		String numberExp = numberExp();
+		String variableExp = javaNameExp();
+		return String.format("(\\(*(%s|%s)\\)*)", numberExp, variableExp);
 	}
-
-	private static String operator() {
-		return "([-+*/])";
+	
+	private static String numberExp() {
+		return "(\\d+\\.?\\d*|\\.\\d+)";
 	}
 
 	public static boolean isArithmeticExpression(String expression) {
@@ -87,67 +88,97 @@ public class Strings {
 		return expression.matches(arithmeticExpression());
 	}
 
-	public static Double computeArithmeticExpression(String expression, double[] values, String[] names) {
+	private static String operator() {
+		return "([-+*/])";
+	}
+
+	/**
+	 * 
+	 * @param expression
+	 * @param values
+	 * @param namesSorted - variable names sorted
+	 * @return computed value of a given expression or Double.NaN
+	 */
+	public static Double computeArithmeticExpression(String expression, double values[], String names[]) {
+		// 10 (* 2)
+		// 10 * 2(())
 		Double res = Double.NaN;
+		names = getUpdatedNames(names);
+		values = getUpdatedValues(values, names);
 		if (isArithmeticExpression(expression) && checkBraces(expression)) {
 			expression = expression.replaceAll("[\\s()]+", "");
-			String[] operands = expression.split(operator());
-			String[] operators = expression.split(operand());
+			String operands[] = expression.split(operator());
+			String operators[] = expression.split(operand());
 			res = getOperandValue(operands[0], values, names);
 			int index = 1;
 			while (index < operands.length && !res.isNaN()) {
-				double operandValue = getOperandValue(operands[0], values, names);
+				double operandValue = getOperandValue(operands[index], values, names);
 				res = computeOperation(res, operandValue, operators[index]);
 				index++;
 			}
+			
 		}
+
 		return res;
+	}
+	
+	private static double[] getUpdatedValues(double[] values, String[] names) {
+		if (values == null) {
+			values = new double[0];
+		}
+		if (values.length != names.length) {
+			values = Arrays.copyOf(values,names.length);
+		}
+		return values;
+	}
+
+	private static String[] getUpdatedNames(String[] names) {
+		
+		return names == null ? new String[0] : names;
 	}
 
 	private static Double computeOperation(Double operand1, double operand2, String operator) {
 		Double res = Double.NaN;
-		if (Double.isNaN(operand2)) {
-			switch (operator) {
-			case "+":
-				res = operand1 + operand2;
-				break;
-			case "-":
-				res = operand1 - operand2;
-				break;
-			case "/":
-				res = operand1 / operand2;
-				break;
-			case "*":
-				res = operand1 * operand2;
-				break;
-			default:
-				res = Double.NaN;
+		if(!Double.isNaN(operand2)) {
+			switch(operator) {
+			case "+": res = operand1 + operand2; break;
+			case "-": res = operand1 - operand2; break;
+			case "*": res = operand1 * operand2; break;
+			case "/": res = operand1 / operand2; break;
+			default: res = Double.NaN;
 			}
 		}
-
 		return res;
 	}
 
 	private static Double getOperandValue(String operand, double[] values, String[] names) {
-		//TODO
 		Double res = Double.NaN;
-		if (operand.matches(numExp())) {
+		int a;
+		if(operand.matches(numberExp())) {
+			res = Double.valueOf(operand);
+		} else {
+			int index = Arrays.binarySearch(names, operand);
+			if (index > -1) {
+				res = values[index];
+			}
 		}
-		
 		return res;
 	}
 
 	public static boolean checkBraces(String expression) {
 		int count = 0;
+		int index = 0;
 		int length = expression.length();
-		for (int i = 0; i < length; i++) {
-			char symbol = expression.charAt(i);
-			if (symbol == '(') {
+		while(index < length && count > -1) {
+			char symb = expression.charAt(index);
+			if (symb == '(') {
 				count++;
-			} else if (symbol == ')') {
+			} else if (symb == ')') {
 				count--;
 			}
+			index++;
 		}
+		
 		return count == 0;
 	}
 }
