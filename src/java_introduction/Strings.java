@@ -1,5 +1,6 @@
 package java_introduction;
 
+
 public class Strings {
 	
 	/**
@@ -17,7 +18,6 @@ public class Strings {
 		int str1Length = str1.length();
 		int str2Length = str2.length();
 		int index = 0;
-		//length 
 		if (str1Length == str2Length) {
 			for (int i = 0; i < str1Length; i++) {
 				helper[(int)str1.charAt(i)]++;
@@ -48,5 +48,24 @@ public class Strings {
 				helper[j]--;
 			}
 		}
+	}
+	
+	public static String javaNameExp() {
+		
+		return "[a-zA-Z$][\\w$]*|_[\\w$]+";
+	}
+	
+	public static String ipV4Octet() {
+		//options here: for 1 and 2 digits; for 3 digits there is few groups with max value: 099, 199, 249, 255
+		return "(\\d{1,2}|[0-1][0-9]{2}|2[0-4][0-9]|25[0-5])";
+	}
+	
+	public static String ipV4() {
+ 		short count = 3; //count of Octets with "."
+		String result = "";
+		for (int i = 1; i <= count; i++) {
+			result += ipV4Octet() + "\\.";
+		}
+		return result + ipV4Octet();
 	}
 }
